@@ -1,71 +1,19 @@
 # wink-runner README
+[README](README.md)|[中文文档](README.zh-CN.md)
 
-This is the README for your extension "wink-runner". After writing up a brief description, we recommend including the following sections.
+I've always had this need: while writing code, I sometimes forget how to use a specific standard library, so I open my browser to look it up. However, I get distracted by various annoying ads, or I spend a lot of time searching without finding what I need. I know, some clever friends might say, "Hey, you have ChatGPT!" You're right, but what if ChatGPT starts talking nonsense? How should you respond then?
 
-## Features
+Another scenario is when I simply need to run a script temporarily to see its effect, but there's no script provided in the project folder for that purpose. I don't want to create a new file, and if I forget to add a .gitignore, that's a problem. In short, the main point is that I have this troublesome requirement, so I decided to create this thing.
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+## Installation
+Simply install it from the VSCode plugin marketplace, or download and install it from [here](https://marketplace.visualstudio.com/items?itemName=yeuoly.wink-runner)
 
-For example if there is an image subfolder under your extension project workspace:
+## Usage
+![Alt text](./resources/image.png)
+It's quite simple and straightforward. Just click "Run" to execute the code. If you need to create a new file, use the "Action" button in the top-level directory. To edit a file, use the "Action" button on the file.
 
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
-
-## Requirements
-
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
-
-## Extension Settings
-
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+## Compile
+```bash
+npm install
+npm run compile
+```
