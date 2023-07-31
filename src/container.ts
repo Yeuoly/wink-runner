@@ -7,7 +7,12 @@ export class WinkRunnerDataProvider implements vscode.TreeDataProvider<TempScrip
         private workspaceRoot: string
     ) { }
 
-	onDidChangeTreeData?: vscode.Event<void | TempScriptFile | TempScriptFile[] | null | undefined> | undefined;
+	private _onDidChangeTreeData: vscode.EventEmitter<TempScriptFile | undefined | null | void> = new vscode.EventEmitter<TempScriptFile | undefined | null | void>();
+    readonly onDidChangeTreeData: vscode.Event<TempScriptFile | undefined | null | void> = this._onDidChangeTreeData.event;
+
+    refresh() {
+        this._onDidChangeTreeData.fire();
+    }
 
 	getTreeItem(element: TempScriptFile): vscode.TreeItem | Thenable<vscode.TreeItem> {
 		return element;
@@ -16,25 +21,33 @@ export class WinkRunnerDataProvider implements vscode.TreeDataProvider<TempScrip
 	getChildren(element?: TempScriptFile | undefined): vscode.ProviderResult<TempScriptFile[]> {
         if (!element) {
             return Promise.resolve(
-                languages.map(v => new TempScriptFile(v.language, vscode.TreeItemCollapsibleState.Collapsed))
+                languages.map(v => new TempScriptFile(v.language, true, `${this.workspaceRoot}/.wink-runner/${v.language}`))
             );
         } else {
             // get language
             const language = element.language;
             // get files in language directory
-            const files = fs.readdirSync(`${this.workspaceRoot}/.wink-runner/${language}`);
+            const files = fs.readdirSync(element.directory);
             return Promise.resolve(
-                files.map(v => new TempScriptFile(v, vscode.TreeItemCollapsibleState.None))
+                files.map(v => {
+                    return new TempScriptFile(v, false, `${element.directory}/${v}`);
+                })
             );
         }
 	}
 }
 
-class TempScriptFile extends vscode.TreeItem {
+export class TempScriptFile extends vscode.TreeItem {
+    public readonly is_dir: boolean;
+
 	constructor(
 		public readonly language: string,
-    	public readonly collapsibleState: vscode.TreeItemCollapsibleState
+        public readonly is_root: boolean = false,
+        public readonly directory: string = '',
 	) {
-        super(language, collapsibleState);
+        super(language);
+        const is_dir = fs.lstatSync(this.directory).isDirectory();
+        this.is_dir = is_dir;
+        this.collapsibleState = is_dir ? vscode.TreeItemCollapsibleState.Collapsed : vscode.TreeItemCollapsibleState.None;
 	}
 }

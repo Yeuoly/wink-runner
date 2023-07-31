@@ -24,7 +24,16 @@
     },
     "commands" : [{
       "command": "wink-runner.openFile",
-      "title": "Open File"
+      "title": "Action"
+    }, {
+      "command": "wink-runner.delFile",
+      "title": "Del"
+    }, {
+      "command": "wink-runner.refresh",
+      "title": "Refresh"
+    }, {
+      "command": "wink-runner.run",
+      "title": "Run"
     }],
     "menus": {
       "view/item/context": [
@@ -32,6 +41,23 @@
           "command": "wink-runner.openFile",
           "group": "inline",
           "when": "view == wink-runner"
+        },
+        {
+          "command": "wink-runner.delFile",
+          "group": "inline",
+          "when": "view == wink-runner"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "wink-runner.refresh",
+          "when": "view == wink-runner",
+          "group": "navigation"
+        },
+        {
+          "command": "wink-runner.run",
+          "when": "view == wink-runner",
+          "group": "navigation"
         }
       ]
     },

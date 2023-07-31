@@ -3,6 +3,7 @@ import * as fs from 'fs';
 
 import { WinkRunnerDataProvider } from './container';
 import { languages } from './language';
+import { registerCommand } from './editor';
 
 function init(rootPath: string) {
 	// check if wink-runner directory exists
@@ -19,9 +20,20 @@ function init(rootPath: string) {
 		}
 
 		// check if each template file exists
-		if (!fs.existsSync(`${rootPath}/.wink-runner/${language.language}/template.${language.extension}`)) {
-			// if not, create it
-			fs.writeFileSync(`${rootPath}/.wink-runner/${language.language}/template.${language.extension}`, language.template);
+		if (!language.new_dir_required) {
+			if (!fs.existsSync(`${rootPath}/.wink-runner/${language.language}/template.${language.extension}`)) {
+				// if not, create it
+				fs.writeFileSync(`${rootPath}/.wink-runner/${language.language}/template.${language.extension}`, language.template);
+			}
+		} else {
+			// check if there is at least one template directory
+			// get directories in language directory
+			const dirs = fs.readdirSync(`${rootPath}/.wink-runner/${language.language}`);
+			if (dirs.length === 0) {
+				// if not, create a new directory
+				fs.mkdirSync(`${rootPath}/.wink-runner/${language.language}/template`);
+				fs.writeFileSync(`${rootPath}/.wink-runner/${language.language}/template/template.${language.extension}`, language.template);
+			}
 		}
 	}
 
@@ -47,7 +59,12 @@ export function activate(context: vscode.ExtensionContext) {
 	// if root path exists, initialize wink-runner
 	if (rootPath) {
 		init(rootPath);
-		vscode.window.registerTreeDataProvider('wink-runner', new WinkRunnerDataProvider(rootPath as string));
+		const winkRunnerDataProvider = new WinkRunnerDataProvider(rootPath as string);
+		vscode.window.registerTreeDataProvider('wink-runner', winkRunnerDataProvider);
+		vscode.commands.registerCommand('wink-runner.refresh', async () => {
+			winkRunnerDataProvider.refresh();
+		});
+		registerCommand(context, winkRunnerDataProvider);
 	} else {
 		vscode.window.showErrorMessage('Workspace not found.');
 	}
